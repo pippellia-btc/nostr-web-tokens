@@ -169,7 +169,7 @@ Example event:
     "id": <32-bytes hex-encoded sha256>,
     "pubkey": <32-bytes hex-encoded public key>,
     "created_at": <unix timestamp in seconds>,
-    "kind": 27235,
+    "kind": 24242,
     "tags": [
         ["t", "upload"],
         ["x", "b1674191a88...4f553"],
