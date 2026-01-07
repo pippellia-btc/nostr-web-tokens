@@ -6,7 +6,7 @@
 
 A **Nostr Web Token (NWT)** is a **signed Nostr event** as defined by [NIP-01](https://github.com/nostr-protocol/nips/blob/master/01.md) used to convey signed claims between parties on the web.
 
-Claims are pieces of informations asserted about a subject. A claim is identified by a name, and associated with one or more values.
+Claims are pieces of information asserted about a subject. A claim is identified by a name, and associated with one or more values.
 
 A NWT is not a JSON Web Token (JWT), but adopts its semantics where applicable.
 
@@ -38,16 +38,16 @@ Claims are represented as `tags`, following JWT naming and semantics where appli
 
 ### Registered Claims
 
-#### Summary
-
 | Claim     |   Tag  |   Status   | Type |     Cardinality     |
 |-----------|--------|------------|------ | --------------------|
 | Issuer | `iss` | Optional | string | single |
 | Subject | `sub` | Optional | string | single |
 | Audience | `aud` | Recommended | string | multi | 
-| Issued At | `iat` | Optional | stringified unix timestamp | single |
-| Expiration | `exp` | Recommended | stringified unix timestamp | single |
-| Not Before | `nbf` | Optional | stringified unix timestamp | single |
+| Issued At | `iat` | Optional | stringified timestamp* | single |
+| Expiration | `exp` | Recommended | stringified timestamp* | single |
+| Not Before | `nbf` | Optional | stringified timestamp* | single |
+
+\* Timestamp values MUST be base-10 non-negative integer seconds since the Unix epoch. Verifiers SHOULD allow a small clock skew (e.g. ±60 seconds).
 
 #### Issuer `iss`
 
@@ -64,8 +64,9 @@ This tag is OPTIONAL. If not present, the subject of the NWT is assumed to be th
 
 The `aud` (audience) claim identifies the recipients that the NWT is
 intended for.  
-Receipients MAY be of various types, such as pubkeys, domain names or even specific endpoints. A verifier MUST reject a NWT if it doesn't identify itself with a value in the audience claim.  
+Recipients MAY be of various types, such as pubkeys, domain names or even specific endpoints. A verifier MUST reject a NWT if it doesn't identify itself with a value in the audience claim. The interpretation of "identify itself" is application-specific.  
 This tag is OPTIONAL, but recommended. If not present, the audience of the NWT is assumed to be everyone, which may cause [security issues](#security-considerations).
+
 #### Issued At `iat`
 
 The `iat` (issued at) claim identifies the time at which the NWT was
@@ -119,12 +120,13 @@ Authorization: Nostr <base64url-no-padding-token>
 
 ## Security Considerations
 
-NWTs are primarely intented for authentication and/or authorization purposes. Just like JWTs, they are bearer tokens; if a malicious actor is able to get a NWT, it may use it to impersonate the user.
+NWTs are primarily intended for authentication and/or authorization purposes. Just like JWTs, they are bearer tokens; if a malicious actor is able to get a NWT, it may use it to impersonate the user.
 
 Because of that, it is recommended to:
 
 * Use short expiration times (e.g. 5 minutes)
-* Restrict the audience for destructive operations
+* Restrict the audience for destructive operations to avoid [replay attacks](https://en.wikipedia.org/wiki/Replay_attack)
+* Use the NWT event `id` if replay detection if needed
 
 ## Comparisons
 
@@ -153,7 +155,7 @@ Example event:
 
 In NWT terms, a NIP-98 event allows for a single URL path as the audience. This requires a signing round for every http request, which can become cumbersome in multi-server scenarios (e.g. blossom).
 
-Secondly, NIP-98 doesn't allow users to specify expiration or "not before" timestamps, which are the primary security features directly in control of the user.
+Secondly, NIP-98 relies on server-side freshness checks rather than user-defined validity time-windows.
 
 Thirdly, NIP-98 doesn't allow for flexibility for app developers to add custom claims.
 
