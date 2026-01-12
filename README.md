@@ -128,6 +128,12 @@ Because of that, it is recommended to:
 * Restrict the audience for destructive operations to avoid [replay attacks](https://en.wikipedia.org/wiki/Replay_attack)
 * Use the NWT event `id` if replay detection if needed
 
+## Libraries
+
+Here is a list of libraries implementing NWT.
+
+- **Go**: https://github.com/pippellia-btc/nwt 
+
 ## Comparisons
 
 Authentication and authorization schemes aren't new in Nostr. Here we compare NWT with other popular schemes, highlighting the superior flexibility and control that NWT gives to the end users.
