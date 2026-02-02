@@ -14,7 +14,7 @@ A NWT is not a JSON Web Token (JWT), but adopts its semantics where applicable.
 
 A NWT has a `kind 27519`, in reference to [REC-7519](https://datatracker.ietf.org/doc/html/rfc7519) that defines the JWT.
 
-Claims are represented as `tags`, following JWT naming and semantics where applicable. Single-cardinality tag names MUST be unique; multi-cardinality claims use repeated tags.
+Claims are represented as `tags`, following JWT naming conventions and semantics where applicable. Claims that allow a single value MUST appear only once; claims that allow multiple values are represented by repeated tags.
 
 ### Example
 
