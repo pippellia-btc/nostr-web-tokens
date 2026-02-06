@@ -53,8 +53,7 @@ Claims are represented as `tags`, following JWT naming conventions and semantics
 
 #### Issuer `iss`
 
-The `iss` (issuer) claim identifies the entity that issued the
-NWT.  
+The `iss` (issuer) claim identifies the entity that issued the NWT.  
 This tag is OPTIONAL. If not present, the issuer of the NWT is assumed to be the Nostr public key (`pubkey`) that signed the event.
 
 #### Subject `sub`
@@ -64,21 +63,18 @@ This tag is OPTIONAL. If not present, the subject of the NWT is assumed to be th
 
 #### Audience `aud`
 
-The `aud` (audience) claim identifies the recipients that the NWT is
-intended for.  
+The `aud` (audience) claim identifies the recipients that the NWT is intended for.  
 Recipients MAY be of various types, such as pubkeys, domain names or even specific endpoints. A verifier MUST reject a NWT if it doesn't identify itself with a value in the audience claim. The interpretation of "identify itself" is application-specific.  
 This tag is OPTIONAL, but recommended. If not present, the audience of the NWT is assumed to be everyone, which may cause [security issues](#security-considerations).
 
 #### Issued At `iat`
 
-The `iat` (issued at) claim identifies the time at which the NWT was
-issued.  
+The `iat` (issued at) claim identifies the time at which the NWT was issued.  
 This tag is OPTIONAL. If not present, the issued timestamp is assumed to be the timestamp of the Nostr event (`created_at`). If present, verifiers MUST use `iat` instead of `created_at`.
 
 #### Expiration `exp`
 
-The `exp` (expiration) claim identifies the expiration time on
-or after which the NWT MUST NOT be accepted for processing.  
+The `exp` (expiration) claim identifies the expiration time on or after which the NWT MUST NOT be accepted for processing.  
 This tag is OPTIONAL, but recommended. If not present, the expiration is assumed to never occur, which may cause [security issues](#security-considerations).
 
 #### Not Before `nbf`
@@ -102,9 +98,9 @@ A verifier MUST:
 
 1. Verify the Nostr event id.
 2. Verify the Nostr event signature.
-3. Verify the event `kind` is `27519`
+3. Verify the event `kind` is `27519`.
 4. Enforce `exp`, `nbf`, and `aud` claims when present; apply default behaviors when absent.
-5. Validate issuer trust (application-defined)
+5. Validate `pubkey` and `iss` trust (application-defined).
 
 
 ## Transport Encoding
